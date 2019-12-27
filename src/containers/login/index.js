@@ -1,5 +1,5 @@
 import React from "react";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import {
   FormControl,
   Button,
@@ -11,6 +11,7 @@ import {
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
+import { apiLogin } from '../../api/login'
 import "./index.less";
 
 const useStyles = makeStyles(theme => ({
@@ -18,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1)
   },
   textField: {
-    width: '100%',
+    width: "100%",
     height: 60
   },
   container: {
@@ -55,21 +56,19 @@ export default withRouter(function Login(props) {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleSubmit = () => {
-    // apiLogin({
-    //   username: values.username,
-    //   password: values.password
-    // }).then(res => {
-    //   console.log("res", res);
-    //   if (!res.token) {
-    //     setValues({ ...values, loginErroMsg: "账号或密码错误" });
-    //     return;
-    //   }
-    //   Cookies.set("token", res.token);
-    //   Cookies.set("loginData", JSON.stringify(res));
-    //   props.globalStore.loginData = res;
-    //   props.history.push("/evaluate");
-    // });
+  const handleSubmit = (values) => {
+    apiLogin({
+      username: values.username,
+      password: values.password
+    }).then(res => {
+      if (res.err) {
+        setValues({ ...values, loginErroMsg: "账号或密码错误" });
+        return;
+      }
+      Cookies.set("token", res.token);
+      Cookies.set("userInfo", JSON.stringify(res.userInfo));
+      props.globalStore.userInfo = res.userInfo;
+    });
   };
 
   return (
@@ -120,12 +119,8 @@ export default withRouter(function Login(props) {
             登录
           </Button>
           <div className="link">
-            <div style={{'textAlign': 'right'}}>
-              <Link
-                component="button"
-                variant="body2"
-                to="/signUp"
-              >
+            <div style={{ textAlign: "right" }}>
+              <Link component="button" variant="body2" to="/signUp">
                 注册
               </Link>
             </div>

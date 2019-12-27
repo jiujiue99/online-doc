@@ -13,16 +13,15 @@ const SnackBarWrapped = ConsumerWrapper(SnackBar)
 
 const Router = observer(props => {
   const globalStore = useLocalStore(
-    source => ({
-      loginData: null,
+    () => ({
+      userInfo: null,
       snackBar: null
-    }),
-    props
+    })
   )
 
   useEffect(() => {
-    const loginData = JSON.parse(Cookies.get("loginData") || '{}')
-    globalStore.loginData = loginData
+    const userInfo = JSON.parse(Cookies.get("userInfo") || '{}')
+    globalStore.userInfo = userInfo
   }, [])
 
   return <RouterContext.Provider value={globalStore}>

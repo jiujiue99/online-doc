@@ -7,8 +7,7 @@ export function handleResponse(res) {
     if (resData.err && !noMessageUrls.some(url => res.config.url.match(url))) {
       window.snackBarStore.showMessage({ message: resData.err, type: 'warning' })
     }
-    return resData.data
+    return resData
   }
   return null
 }
-
