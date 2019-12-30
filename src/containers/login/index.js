@@ -12,7 +12,7 @@ import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 import { apiLogin } from '../../api/login'
-import "./index.less";
+import "./index.scss";
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -68,6 +68,7 @@ export default withRouter(function Login(props) {
       Cookies.set("token", res.token);
       Cookies.set("userInfo", JSON.stringify(res.userInfo));
       props.globalStore.userInfo = res.userInfo;
+      props.history.push('/playground')
     });
   };
 

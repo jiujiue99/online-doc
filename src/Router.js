@@ -6,10 +6,13 @@ import ConsumerWrapper from './components/ConsumerWrapper'
 import Login from './containers/login'
 import Cookies from "js-cookie"
 import SnackBar from './components/SnackBar'
+import Playground from './containers/playground'
+import { toJS } from 'mobx'
 
 export const RouterContext = createContext()
 
 const SnackBarWrapped = ConsumerWrapper(SnackBar)
+const LoginWrapped = ConsumerWrapper(Login)
 
 const Router = observer(props => {
   const globalStore = useLocalStore(
@@ -29,8 +32,9 @@ const Router = observer(props => {
     <SnackBarWrapped />
     <HashRouter>
       <Switch>
-        <Route path="/" exact component={ConsumerWrapper(Login)} />
-        <Route path="/login" component={ConsumerWrapper(Login)} />
+        <Route path="/" exact component={LoginWrapped} />
+        <Route path="/login" component={LoginWrapped} />
+        <Route path="/playground" component={ConsumerWrapper(Playground)} />
       </Switch>
     </HashRouter>
   </RouterContext.Provider>
